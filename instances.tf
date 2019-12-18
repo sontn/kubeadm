@@ -1,4 +1,3 @@
-
 resource "google_compute_instance" "lb01" {
   boot_disk {
     auto_delete = "true"
@@ -22,12 +21,12 @@ resource "google_compute_instance" "lb01" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -64,12 +63,12 @@ resource "google_compute_instance" "master01" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -106,12 +105,12 @@ resource "google_compute_instance" "master02" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -148,12 +147,12 @@ resource "google_compute_instance" "master03" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -190,12 +189,12 @@ resource "google_compute_instance" "node01" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -232,12 +231,12 @@ resource "google_compute_instance" "node02" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
@@ -274,12 +273,12 @@ resource "google_compute_instance" "node03" {
       network_tier = "PREMIUM"
     }
     
-    network            = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/global/networks/default"
+    network            = "https://www.googleapis.com/compute/v1/projects/sandbox/global/networks/default"
     network_ip         = ""
-    subnetwork         = "https://www.googleapis.com/compute/v1/projects/vinid-sandbox/regions/asia-east1/subnetworks/default"
-    subnetwork_project = "vinid-sandbox"
+    subnetwork         = "https://www.googleapis.com/compute/v1/projects/sandbox/regions/asia-east1/subnetworks/default"
+    subnetwork_project = "sandbox"
   }
-  project = "vinid-sandbox"
+  project = "sandbox"
   scheduling {
     automatic_restart   = "false"
     on_host_maintenance = "TERMINATE"
