@@ -168,3 +168,109 @@ sudo kubeadm join 10.140.0.59:6443 --token 7kay49.506yr6xrnbyxxxxx \
 --discovery-token-ca-cert-hash sha256:96a61d3463af4a31d4f97681f43dcf85adb0b73f889a01c8fc4a831bcedxxxxx \
     --control-plane --certificate-key 155faf6ee07c34310b27f7a62d708731e5e5072a176e3fc6169cf14040xxxxx
 ```
+Sau khi chạy xong trên 02 master node rồi, quay lại master01 để kiểm tra xem master đã lên chưa
+```
+master01:~$ kubectl  get node
+NAME       STATUS   ROLES    AGE    VERSION
+master01   Ready    master   13m    v1.17.0
+master02   Ready    master   114s   v1.17.0
+master03   Ready    master   57s    v1.17.0
+```
+Như vậy là các master node đều đã chạy thành công.
+### 2.4. Cấu hình các worker node
+Cấu hình worker node bằng kubeadm thật sự đơn giản. Chúng ta chỉ cần thực hiện câu lệnh ở dưới đây trên từng máy node01, node02, node03 là xong
+```
+sudo kubeadm join 10.140.0.59:6443 --token 7kay49.506yr6xrnbyxxxxx \
+    --discovery-token-ca-cert-hash sha256:96a61d3463af4a31d4f97681f43dcf85adb0b73f889a01c8fc4a831bcedxxxxx
+```
+Output thành công sẽ trông như sau:
+```
+W1216 03:15:08.373634   24183 join.go:346] [preflight] WARNING: JoinControlPane.controlPlane settings will be ignored when control-plane flag is not set.
+[preflight] Running pre-flight checks
+        [WARNING IsDockerSystemdCheck]: detected "cgroupfs" as the Docker cgroup driver. The recommended driver is "systemd". Please follow the guide at https://kubernetes.io/docs/setup/cri/
+[preflight] Reading configuration from the cluster...
+[preflight] FYI: You can look at this config file with 'kubectl -n kube-system get cm kubeadm-config -oyaml'
+[kubelet-start] Downloading configuration for the kubelet from the "kubelet-config-1.17" ConfigMap in the kube-system namespace
+[kubelet-start] Writing kubelet configuration to file "/var/lib/kubelet/config.yaml"
+[kubelet-start] Writing kubelet environment file with flags to file "/var/lib/kubelet/kubeadm-flags.env"
+[kubelet-start] Starting the kubelet
+[kubelet-start] Waiting for the kubelet to perform the TLS Bootstrap...
+This node has joined the cluster:
+* Certificate signing request was sent to apiserver and a response was received.
+* The Kubelet was informed of the new secure connection details.
+Run 'kubectl get nodes' on the control-plane to see this node join the cluster.
+```
+Giờ quay trở lại máy master01 để kiểm tra xem các node worker đã join được thành công chưa, bằng câu lệnh
+```
+master01:~$ kubectl  get nodes
+NAME       STATUS   ROLES    AGE     VERSION
+master01   Ready    master   21m     v1.17.0
+master02   Ready    master   9m23s   v1.17.0
+master03   Ready    master   8m26s   v1.17.0
+node01     Ready    <none>   88s     v1.17.0
+node02     Ready    <none>   87s     v1.17.0
+node03     Ready    <none>   88s     v1.17.0
+```
+Các trạng thái ghi là Ready, tức là đã thành công. Giờ còn bước cuối là kiểm thử xem chúng ta có triển khai được ứng dụng vào cụm k8s hay không.
+### 3. Test
+Ở trên máy master01, chúng ta chạy các câu lệnh sau:
+#### Test Deployment
+`kubectl create deployment nginx --image=nginx`
+Check lại
+`kubectl get pods -l app=nginx`
+Output
+```
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-554b9c67f9-vt5rn   1/1     Running   0          10s
+```
+#### Test Port Forwading
+```
+POD_NAME=$(kubectl get pods -l app=nginx -o jsonpath="{.items[0].metadata.name}")
+kubectl port-forward $POD_NAME 8080:80 &
+```
+Output
+`Forwarding from 127.0.0.1:8080 -> 80 Forwarding from [::1]:8080 -> 80`
+Tạo request bằng curl
+`curl - head http://127.0.0.1:8080`
+Output
+```
+HTTP/1.1 200 OK
+Server: nginx/1.17.3
+Date: Sat, 14 Sep 2019 21:10:11 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Tue, 13 Aug 2019 08:50:00 GMT
+Connection: keep-alive
+ETag: "5d5279b8-264"
+Accept-Ranges: bytes
+```
+#### Test Logs
+`kubectl logs $POD_NAME`
+Output
+`127.0.0.1 - - [14/Sep/2019:21:10:11 +0000] "HEAD / HTTP/1.1" 200 0 "-" "curl/7.52.1" "-"`
+#### Test Exec
+`kubectl exec -ti $POD_NAME - nginx -v`
+Output
+`nginx version: nginx/1.17.3`
+#### Test Services
+`kubectl expose deployment nginx - port 80 - type NodePort`
+Xem giá trị của Node Port bằng lệnh
+```
+NODE_PORT=$(kubectl get svc nginx \
+  --output=jsonpath='{range .spec.ports[0]}{.nodePort}')
+EXTERNAL_IP=${IP của sontn-node01}
+curl -I http://${EXTERNAL_IP}:${NODE_PORT}
+```
+Output
+```
+HTTP/1.1 200 OK
+Server: nginx/1.17.3
+Date: Sat, 14 Sep 2019 21:12:35 GMT
+Content-Type: text/html
+Content-Length: 612
+Last-Modified: Tue, 13 Aug 2019 08:50:00 GMT
+Connection: keep-alive
+ETag: "5d5279b8-264"
+Accept-Ranges: bytes
+```
+Như vậy chúng ta đã cài đặt và triển khai được ứng dụng vào cụm kubernetes HA bằng công cụ kubeadm cho môi trường Production. Qua việc triển khai, chúng ta đã hiểu và nắm bắt được thành phần cơ bản và quan trọng nhất của k8s, đó chính là master node và worker. Giờ là lúc các bạn có thể tự tin deploy, quản trị hàng nghìn ứng dụng của mình trên  kubernetes được rồi đấy. Nếu các bạn thấy bài viết hữu ích, xin mời các bạn Like và Share bài viết nhé. Cảm ơn các bạn nhiều!
