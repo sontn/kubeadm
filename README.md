@@ -1,4 +1,4 @@
-# Cài đặt kubernetes (k8s) HA bằng kubeadm cho môi trường sản phẩm thật
+# Cài đặt Kubernetes (k8s) HA bằng kubeadm cho môi trường sản phẩm thật
 
 Để quản trị với K8s, việc đầu tiên chúng ta phải cài đặt được K8s lên. Có nhiều cách để làm, một trong những cách đơn giản để làm là sử dụng công cụ kubeadm. Công cụ này là production-ready, nghĩa là sử dụng trong quá trình cài đặt cho môi trường chạy sản phẩm thật.
 
