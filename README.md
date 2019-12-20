@@ -26,6 +26,8 @@
 Các máy này được chạy trên môi trường Google Cloud Platform. Chúng ta có thể sử dụng Terraform để tạo ra máy ảo cho nhanh theo cách Infrastructure as Code.
 Code tạo máy ảo chi tiết chúng ta có thể xem tại đây:
 
+https://github.com/sontn/kubeadm/blob/master/instances.tf
+
 Terraform có 3 bước chính để chạy
 
 ```
